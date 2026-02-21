@@ -10,8 +10,6 @@ DO_SECURITY=false
 DO_MONITORING=false
 
 
-echo " Type what we need "
-sudo yum update -y
 
 
 if $JAVA; then
