@@ -1,8 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-DO_JENKINS=true
-DO_TERRAFORM=true
+DO_JAVA=false
+DO_JENKINS=false
+DO_TERRAFORM=false
 DO_DOCKER=false
 DO_KUBERNETES=false
 DO_SECURITY=false
@@ -11,6 +12,22 @@ DO_MONITORING=false
 
 echo " Type what we need "
 sudo yum update -y
+
+
+if $JAVA; then
+sudo apt install openjdk-17-jre -y
+java --version
+fi
+
+
+if $DO_JENKINS; then
+echo "Installing Java 17 + Jenkins LTS..."
+sudo yum install -y java-17-amazon-corretto-devel
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+sudo yum install -y jenkins
+sudo systemctl enable jenkins --now
+fi
 
 
 if $AWS_CLI; then
@@ -33,14 +50,6 @@ rm terraform*${VERSION}_linux_amd64.zip
 fi
 
 
-if $DO_JENKINS; then
-echo "Installing Java 17 + Jenkins LTS..."
-sudo yum install -y java-17-amazon-corretto-devel
-sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
-sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
-sudo yum install -y jenkins
-sudo systemctl enable jenkins --now
-fi
 
 
 
