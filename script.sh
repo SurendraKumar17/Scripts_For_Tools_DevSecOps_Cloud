@@ -3,6 +3,7 @@ set -euo pipefail
 
 DO_JAVA=false
 DO_JENKINS=false
+DO_MAVEN=false
 DO_TERRAFORM=false
 DO_DOCKER=false
 DO_KUBERNETES=false
@@ -36,6 +37,12 @@ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip
 unzip awscliv2.zip
 sudo ./aws/install
 aws --version
+fi
+
+if $MAVEN; then
+sudo apt update -y
+sudo apt install maven -y
+mvn -version
 fi
 
 
